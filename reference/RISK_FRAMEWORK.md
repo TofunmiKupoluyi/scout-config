@@ -1,6 +1,6 @@
-# RISK FRAMEWORK — the exact Obsidian / Nickel risk model (memory + context file for the research harness)
+# RISK FRAMEWORK — the production risk model (binding on every proposal)
 
-Copied from production as of 2026-10-10: `backtest/engine_v2.py` (RISK2 + run loop), `live/live_trader.py` (CFG, PROFILES, EXEC, LEVERAGE_CAP), `live/metrics.py` (limit rows), `live/control.py` (operator plane), `NICKEL_PROGRAM_REFERENCE.md` (program rules), `deploy/V23_ENSEMBLE_ADOPTION.md` (rollback rule), the 2026-10-09 post-trade review (live lessons). The machine-readable twin is `RISK_FRAMEWORK.json`; the two must agree, and neither is edited by an agent.
+Current as of 2026-10-10, including the lessons of the 2026-10-09 post-trade review. The machine-readable twin is `reference/RISK_FRAMEWORK.json`; the two must agree, and neither is edited by an agent.
 
 Everything is measured on **notional** (the program's capital number, in an external config, never margin or equity). The model is computed at a $10M reference book and scaled to notional; weights below are fractions of NAV = notional × compounded NAV index.
 

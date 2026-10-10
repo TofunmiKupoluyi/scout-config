@@ -1,11 +1,11 @@
 ---
 name: "data-and-backtest"
-description: "The data model, derived panels, point-in-time rules, the fixed test battery (target, windows, gates K1–K5, verdicts, costs) and the replica simulation of the alpha research harness. Use when writing or reviewing signal.py, implementing a PREREG, running the smoke check or battery, or reasoning about panels, as-of timing, gates or execution costs. Raw candles, funding and open-interest metrics come from the S3 bucket covered by the binance-futures-data skill."
+description: "The data model, derived panels, point-in-time rules, the fixed test battery (target, windows, gates K1–K5, verdicts, costs) and the replica simulation of the alpha research harness. Use when writing or reviewing signal.py, implementing a PREREG, or reasoning about panels, as-of timing, battery gates, verdicts or execution costs. Raw candles, funding and open-interest metrics come from the S3 bucket covered by the binance-futures-data skill."
 ---
 
-# Data model, panels, the fixed battery and the replica simulation (shared reference for the Scout and Judge skills)
+# Data model, panels, the fixed battery and the replica simulation
 
-This is how research and backtests run against the data. It is a copy of Obsidian's conventions adapted to a 1-minute base layer. Raw candles, funding rates and exchange metrics come from the S3 bucket described in the `binance-futures-data` skill; the data catalogue (delivered in the context pack) records which panels exist and their coverage.
+This is how research and backtests run against the data. Raw candles, funding rates and exchange metrics come from the S3 bucket described in the `binance-futures-data` skill; the data catalogue (delivered in the context pack) records which panels exist and their coverage.
 
 ## 1. Raw data
 **Candles.** 1-minute, 1-hour and 1-day OHLCV for every Binance USDT-M perpetual that ever listed (survivorship-free: delisted names stay), from the S3 bucket in the `binance-futures-data` skill — bucket layout, schemas, credentials (`AWS_S3_ACCESS_KEY` / `AWS_S3_ACCESS_KEY_SECRET`, read-only, never printed or logged) and pitfalls are documented there and are not repeated here. Two facts that skill states and research must respect: missing minutes are real gaps, never filled with synthetic prices (a bar with `n_trades == 0` is a real quiet bar; leave gaps NaN), and prices are last-traded, not mark — Binance drives liquidations and funding off mark price, so liquidation modelling from candles is approximate.
@@ -14,10 +14,10 @@ This is how research and backtests run against the data. It is a copy of Obsidia
 **Inputs not in the bucket** (the harness ingests them separately; the catalogue records what exists):
 - Premium index klines (mark − index), 1-minute.
 - Symbol tags: listing date, delisting date, underlying type (COIN / INDEX / …), base/quote, contract multiplier (1000PEPE-style names), redenomination events.
-- Optional: hourly aggtrade and book-depth aggregates (trade-size buckets, ±1% / ±5% depth) as in Obsidian's `pipeline/microstructure.py`.
+- Optional: hourly aggtrade and book-depth aggregates (trade-size buckets, ±1% / ±5% depth).
 
 ## 2. Derived panels (built once by the harness, versioned, read-only for the agents)
-All panels are wide frames: index = timestamp (UTC), columns = symbols; float32. Agents read them only through the panel API (see the signal contract in the `research-scout` skill), never from storage directly.
+All panels are wide frames: index = timestamp (UTC), columns = symbols; float32. `signal.py` reads them only through the `panel` object the battery passes to `build()` (see the signal contract in the `research-scout` skill), never from storage directly.
 - **Hourly** (the engine's native resolution; 1-minute bars aggregated by OPEN time of the hour, stamped at the hour's CLOSE so a row at 13:00 contains 12:00–12:59): `close, open, high, low, qv (quote volume), tbq (taker-buy quote), n_trades, fund (funding paid at print hours, 0 elsewhere; sign: positive = longs pay), fund_interval, mdv21 (21-day median of daily quote volume, forward-filled from the daily series), beta_btc (rolling 60-day beta of hourly returns to BTC, clipped [−3, 3], lagged one hour), mcap (carried forward, 2025-Q3 onward), univ (bool: hysteresis universe), no_entry (bool: delisting ramp), oi_value, premium, taker/positioning ratios`.
 - **Daily** (00:00 UTC; day D's value is stamped at D+1 00:00 so that "data at day t" means data strictly before t 00:00): `close_d, lr_d (log return), rs_d (simple return), resid_s_d / resid_l_d (BTC-residual simple/log return using yesterday's beta), fund_d (funding a long pays per calendar day), mdv, mcap, univ`.
 - **1-minute** panels are NOT built wide (41,880 × 730 hourly is 245 MB per panel; 1-minute would be 60× that). Intraday hypotheses read per-symbol minute data through the `panel.minute(symbol, start, end)` accessor and aggregate to the feature they need; the battery still evaluates at hourly or daily horizons.
@@ -31,7 +31,7 @@ All panels are wide frames: index = timestamp (UTC), columns = symbols; float32.
 5. Listings: a name has no feature until its lookback is full; do not backfill. Redenominations: the tags data gives the date; returns across it are NaN.
 6. Anything that reads the eval window to choose a parameter is lookahead in the research sense, even if it is point-in-time in the data sense.
 
-## 4. The fixed battery (code; the agents cannot edit it; identical to Obsidian's `research_agent/harness.py`)
+## 4. The fixed battery (Judge runs it; no agent edits it)
 **Target.** Next-7-day cross-sectional BTC-residual SIMPLE return, net of funding (Σ daily simple residuals over the horizon minus funding paid), on Monday cross-sections of the universe. Variants pre-registered by horizon class: `xs-1d` (daily cross-sections, next-1-day), `mft-1h/4h/12h` (hourly cross-sections sampled every H hours, next-H-hour residual return; the MFT battery adds breakeven round-trip cost in bp).
 **Windows.** calib 2022-01-01 → 2023-12-31; eval 2024-01-01 → EVAL_END, where EVAL_END = last completed month end at the time of the pre-registration, written into the pre-registration and asserted by the battery (it is never extended by an agent). A window with fewer than 20 weeks carrying the feature is PENDING-DATA, never a verdict.
 **Gates, both windows unless stated.** K1 weekly rank-IC t: calib ≥ 2.5 and eval same sign with t ≥ 1.5. K2 quintile monotonicity: Spearman of window-average quintile mean returns vs rank ≥ 0.8. K3 residual IC after regressing the feature on a4, a12, a90x_ratio, log mdv21, log mcap ≥ 50% of raw IC. K4 placebos: fixed random relabelling of names |t| < 1.5; lead/lag symmetry — the signal led by L days (L = lookback + 8, rounded up to whole weeks) must not predict better than the same signal lagged by L; a placebo that cannot be computed FAILS. K5 Q5−Q1 weekly spread in simple returns net of funding and of 20 bp × turnover ≥ 40 bp/week.
@@ -39,21 +39,15 @@ All panels are wide frames: index = timestamp (UTC), columns = symbols; float32.
 **Also produced, never a gate.** Standalone sleeve backtest (weekly Q5−Q1, 1× gross, net; return / Sharpe / max DD per window and per year) and the master's Sharpe with a 10% overlay; quintile means; long/short leg; MDV-tercile split; year table.
 **Cost in the battery.** 20 bp round trip per unit turnover at the weekly horizon (conservative relative to the measured 3–8 bp all-in; the 2× stress happens at the portfolio stage).
 
-## 5. The replica simulation (portfolio stage; `engine_v2.run` semantics)
+## 5. The replica simulation (the portfolio stage Judge runs on survivors — context for why capacity, costs and the adoption bar shape proposals)
 Hourly loop. Signals at hour t → targets → trades filled at hour t's close paying fee + half-spread tier + impact; the position earns the next hour's close-to-close return; funding per print; BTC hedge solved each hour. Every parameter is in `RISK_FRAMEWORK.json` (`sizing`, `caps`, `fund_limits`, `hedge`, `trade_gating`, `execution`, `cost_model`, `governor`). Research options (all default off, master bit-exact): external sleeve via `extra` target panel, `scale` / `scale_post` multipliers, `size_components`, `mult_override` (governor 2×2), `record_trades`, `record_targets`. Canonical baselines are stored runs with a manifest; every paired claim is against a named baseline, bit-exact reproducible.
 **Governor 2×2.** Any governor-dependent claim is reported on both multiplier paths: the candidate's own path and the master's imposed path (`mult_override`); the alpha term A is the paired difference at the master's path, the governor interaction G is the rest.
-**Paired statistics** (`evalkit`): Δ return/yr, Newey-West t, ΔSharpe with symbol×block bootstrap CI, per-year table, worst 1/7/30-day, alt-vs-BTC beta, turnover and cost change, all at 1× and 2× costs.
+**Paired statistics**: Δ return/yr, Newey-West t, ΔSharpe with symbol×block bootstrap CI, per-year table, worst 1/7/30-day, alt-vs-BTC beta, turnover and cost change, all at 1× and 2× costs.
 **Adoption bar** (fixed): Δ ≥ 0 in BOTH windows at the master's risk budget, eval NW t ≥ 1.5, survives 2× costs, no year more than 3 points worse than the baseline. Passing = CANDIDATE dossier for a human; it is not adoption.
 
 ## 6. Execution realism carried into research (measured live, 2026-10-09 post-trade review)
 Fill at the hourly close is unbiased (+2.5 ± 3.5 bp vs the research entry); realised fee 2.5–2.75 bp (model 4); realised spread+impact 0.4 bp overall against 4.4 modelled, by tier illiquid +5.9 / mid −9.7 / liquid +0.9 vs 8.7 / 3.8 / 1.1 ex fee; OPENs fill ~14 bp better than the bar close, CLOSEs ~23 bp worse (exits chase an intra-hour move); impact at < 0.5% participation ≈ 1.8 bp; everything above $1M notional is model-only (no slice has ever been split). The 2× cost stress remains the standard; a kind-dependent cost (cheaper entries, dearer exits) is a disclosed sensitivity, not a default. The +24 h markout of live trades against the replica's own markouts is the execution-side alpha monitor.
 
-## 7. Commands (the only ones the agents run)
-```
-python3 harness.py --id <ID> --smoke                 # shape / coverage check
-python3 harness.py --id <ID>                         # full battery → results/auto/<ID>_signal.json + verdict line
-python3 harness.py --id <ID> --battery mft --h 4     # intraday variant (pre-registered horizon)
-python3 robustness.py --id <ID>                      # Judge only: pre-registered robustness extension
-python3 portfolio.py --id <ID> --budget 0.10         # Judge only: replica sim + governor 2×2 + paired stats vs the named baseline
-```
-The ledger itself is not a local file in this deployment: it lives in Linear (one row per pre-registration = the gated hypothesis issue and its `PREREG` comment; see AGENTS.md §0). The experiment count and budgets are computed from Linear and arrive as "budget facts".
+## 7. Who runs what
+You write `signal.py` to the signal contract; Judge runs the fixed battery on it (including the intraday variant when the pre-registration names an `mft-*` horizon) and posts the `VERDICT`. You never execute the battery, `signal.py`, or any backtest, and you never see battery output — the gates and windows above exist so your kill result and base case are precise numbers the battery can settle. The robustness and portfolio stages are also Judge's.
+The ledger is not a local file in this deployment: it lives in Linear (one row per pre-registration = the gated hypothesis issue and its `PREREG` comment; see AGENTS.md §0). The experiment count and budgets are computed from Linear and arrive as "budget facts".

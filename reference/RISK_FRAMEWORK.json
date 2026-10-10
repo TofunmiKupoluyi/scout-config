@@ -1,8 +1,7 @@
 {
   "_meta": {
-    "name": "Obsidian risk framework (production v2.3 / v2.3.1, CPPI profile) — machine-readable twin of RISK_FRAMEWORK.md",
+    "name": "Production risk framework (v2.3 / v2.3.1, CPPI profile) — machine-readable twin of RISK_FRAMEWORK.md",
     "as_of": "2026-10-10",
-    "sources": ["backtest/engine_v2.py RISK2", "live/live_trader.py CFG/PROFILES/EXEC/LEVERAGE_CAP", "live/metrics.py fund_limits/pos limits", "NICKEL_PROGRAM_REFERENCE.md", "deploy/V23_ENSEMBLE_ADOPTION.md §4b/§4c"],
     "units": "weights are fractions of NAV (notional × compounded NAV index); bp = 1e-4; $ amounts at the $10M reference book unless stated",
     "editable_by_agents": false
   },

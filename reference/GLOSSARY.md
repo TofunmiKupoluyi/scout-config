@@ -1,4 +1,4 @@
-# Obsidian — names for humans (2026-09-11)
+# The production strategy — names for humans (2026-09-11)
 
 Code identifiers (`a4`, `a12`, `a90x_ratio`, `PROFILES["nickel"]`, `dd_cppi`, …) stay as they are — renaming production symbols the night before a deployment is not worth the regression risk, and the research ledger refers to them. In prose, reports, Telegram and dashboards we use the nicknames below, code id in brackets the first time: e.g. "FundingCarry (A4)".
 
