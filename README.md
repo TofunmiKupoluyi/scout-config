@@ -11,7 +11,7 @@ Configuration for **Scout**, agent A of a two-agent alpha-research desk on Binan
 | `reference/REJECTION_PATTERNS.md` | The five ways 140+ past tests failed; every proposal must say why it is not one of them. |
 | `reference/GLOSSARY.md` | Human names for the production sleeves and sizing vocabulary (`a4` FundingCarry, `a12` IlliquidityPremium, `a90x_ratio` TakerFlow-R, …). |
 | `.agents/skills/research-scout/` | Scout's task skill: proposal schema, signal contract, build checklist, idea-map hygiene. |
-| `.agents/skills/data-and-backtest/` | Data model, derived panels, point-in-time rules, the battery's target/windows/gates K1–K5, the replica simulation. |
+| `.agents/skills/data-and-backtest/` | Data model, the panel contract `signal.py` is written against, point-in-time rules, the battery's target/windows/gates K1–K5, the adoption bar. |
 | `.agents/skills/binance-futures-data/` | The S3 data bucket: candles, funding rates, open-interest metrics — layout, schemas, access, pitfalls. |
 | `.claude/skills` | Symlink to `.agents/skills` so Claude Code discovers the skills. |
 
@@ -21,6 +21,8 @@ This is a config repo: it contains no executable research code, by design. Scout
 
 Scout **writes** `signal.py` against the panel interface documented in the `research-scout` skill but **never executes** it, the battery, or any backtest: Judge runs the fixed battery on the submitted code and posts the `VERDICT` on the hypothesis issue. Scout never sees battery output, which is what keeps pre-registration honest.
 
-Delivered with each task, not stored anywhere: the context pack (idea map, ledger tail, coverage map, data catalogue, recent verdicts, open escalations), budget facts, the slot type, the `<ID>` for a build, and attribution reports for AUTOPSY. Secrets are referenced by name only: `LINEAR_API_KEY`, `AWS_S3_ACCESS_KEY`, `AWS_S3_ACCESS_KEY_SECRET`.
+Delivered with each task by the orchestration that invokes Scout, not stored anywhere: the context pack (idea map, ledger tail, coverage map, data catalogue, recent verdicts, open escalations), budget facts, the slot type, the `<ID>` for a build, and attribution reports for AUTOPSY. Secrets are referenced by name only: `LINEAR_API_KEY`, `AWS_S3_ACCESS_KEY`, `AWS_S3_ACCESS_KEY_SECRET`.
+
+Two pieces therefore live outside this repo and must exist for the loop to run end to end: the **orchestration** that invokes Scout with tasks and assembles the context pack from Linear, and **Judge's battery** that supplies the `panel` object per the contract in `data-and-backtest`, executes submitted `signal.py`, and posts verdicts. Neither exists yet; the specs here are their blueprint. Three panel inputs are additionally unprovisioned in the data itself (market cap, premium index, full symbol tags — see `data-and-backtest` §1).
 
 All state — hypotheses, pre-registrations, builds, verdicts, the ledger, the idea map, the journal, escalations — lives in Linear per `AGENTS.md` §0.
