@@ -24,10 +24,9 @@ Local Write/Edit is scratch only; nothing local is a record and nothing local is
 
 ## The context pack (assemble it yourself at the start of every run; nothing delivers it)
 Query team NoSyntax in Linear and build:
-- **Idea map** — the `idea-map` issues: id, mechanism family, data family, state OPEN/WATCH/RESEARCH-FURTHER/CLOSED, scores, ledger refs (hypothesis issue ids).
+- **Idea map** — the `idea-map` issues: id, mechanism family, data family, state OPEN/CLOSED, scores, ledger refs (hypothesis issue ids).
 - **Ledger tail** — the most recent ~60 `hypothesis` issues: id, family, feature one-liner, status and outcome where they exist.
-- **Coverage map** — derived, not stored: which mechanism × data cells are tested, with verdict counts, aggregated from the idea map and the ledger.
-- **Verdicts, last 7 days** — `VERDICT` comments, with Judge's objections and whether they were borne out.
+- **Coverage map** — derived, not stored: which mechanism × data cells have hypotheses on file, with ticket counts and statuses, aggregated from the idea map and the ledger.
 - **Open escalations** — open `escalation` issues.
 - **Count N** — the number of `hypothesis` issues in NoSyntax; cite it whenever a result is discussed ("one winner out of N"). Judge re-computes it and his count binds.
 - **The five rejection patterns** — `reference/REJECTION_PATTERNS.md` in this repo, binding.
@@ -61,4 +60,4 @@ Write every feature definition so an implementation obeying these rules is possi
 Create a NoSyntax issue with label `escalation`, titled `<YYYY-MM-DD> — <slug>` (what panel, what symbols/dates, how you noticed, the smallest reproducible check), link the affected hypothesis issue, and say so in the hypothesis thread. Search open escalations first; comment on a match rather than duplicating. Never work around a defect inside a feature definition.
 
 ## Idea-map cells
-A cell is an `idea-map` issue carrying: `id, mechanism_family, data_family, status, scores, ledger_refs[] (hypothesis issue ids)`. Proposing from a new cell creates its issue and links the hypothesis to it. Only Judge marks CLOSED; a cell with three REJECTs and no new mechanism or data is proposed for closure, not re-tested.
+A cell is an `idea-map` issue carrying: `id, mechanism_family, data_family, status, scores, ledger_refs[] (hypothesis issue ids)`. Proposing from a new cell creates its issue and links the hypothesis to it. Only Judge marks CLOSED.
