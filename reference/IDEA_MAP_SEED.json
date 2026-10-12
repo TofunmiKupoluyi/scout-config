@@ -1,0 +1,664 @@
+{
+ "_about": "Seed for the idea-map issues in Linear (team NoSyntax, label idea-map). One issue per cell; title = '<id> — <title>'; description = this JSON cell. OPEN = unstarted state, CLOSED = completed state. CLOSED cells carry the inherited record of what 140+ pre-registered tests already killed on this universe (2022-2026) — Scout does not re-propose them without a NEW mechanism or NEW data named in evidence_on_file. Run tools/seed_idea_map.py once (idempotent: it searches titles first).",
+ "cells": [
+  {
+   "id": "FF-liq-cascade-reversal",
+   "mechanism_family": "forced-flow",
+   "data_family": "klines_1m+oi",
+   "status": "OPEN",
+   "title": "Post-liquidation-cascade reversal in liquid names",
+   "scores": {
+    "plausibility": 4,
+    "novelty": 3,
+    "capacity": 3,
+    "testability": 4,
+    "complexity": 2
+   },
+   "priority": 72,
+   "ledger_refs": [],
+   "last_tested": null,
+   "next_test": "event = OI drop >= x% within 1h with volume >= y x 30-day median; horizon 4h-3d; liquid tercile only; controls: ordinary days, moderate down days",
+   "notes": "inherited: a 'fragility score' built on thin tape was INVERTED - cascades come from ACTIVE names (5-14x volume, 1.5-2.4x OI); a panic-day liquid-loser reversal (+181/+175 bp per 3d, t 2.5/2.1, controls clean) failed as a sleeve at book size because of entry/exit churn - WATCH"
+  },
+  {
+   "id": "FF-panic-liquid-loser",
+   "mechanism_family": "forced-flow",
+   "data_family": "klines_1h",
+   "status": "OPEN",
+   "title": "Panic-day liquid-loser reversal as an execution rule rather than a sleeve",
+   "scores": {
+    "plausibility": 4,
+    "novelty": 2,
+    "capacity": 2,
+    "testability": 4,
+    "complexity": 2
+   },
+   "priority": 32,
+   "ledger_refs": [
+    "rj4"
+   ],
+   "last_tested": "2026-10-08",
+   "next_test": "do not trim liquid losers on panic days (EW alt <= -8% or BTC <= -7%); 3-day hold of forced buys; measure as a veto on the governor's trims, not as a sleeve",
+   "notes": "FOLLOW-UP: signal real, sleeve fails (+1.0/-0.2 %/yr at master's budget)"
+  },
+  {
+   "id": "FF-unlock-veto",
+   "mechanism_family": "forced-flow",
+   "data_family": "unlocks+klines",
+   "status": "OPEN",
+   "title": "Token-unlock pre-week veto on the long leg",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 2,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 2
+   },
+   "priority": 27,
+   "ledger_refs": [
+    "E150"
+   ],
+   "last_tested": "2026-10-02",
+   "next_test": "veto longs in names with an unlock >= 1.7 days of volume inside the next 7 days (2024-26 effect: +1.4% pre-week, t 2.0); test as a filter on the existing long leg",
+   "notes": "FOLLOW-UP: the 88%-negative headline is the names (unlock-heavy names bleed ~1%/wk on any date), not the dates"
+  },
+  {
+   "id": "FF-funding-extreme-unwind",
+   "mechanism_family": "forced-flow",
+   "data_family": "funding",
+   "status": "CLOSED",
+   "title": "Extreme positive-funding quintile gets squeezed / payer unwind",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 3,
+    "testability": 4,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E69",
+    "E153"
+   ],
+   "last_tested": "2026-10-02",
+   "next_test": null,
+   "notes": "the extreme quintile is squeezed; the negative-funding long leg's price bleed eats its funding; the trend gate already does the work"
+  },
+  {
+   "id": "FF-listing-short",
+   "mechanism_family": "forced-flow",
+   "data_family": "symbols+klines",
+   "status": "CLOSED",
+   "title": "Short new Binance listings for 90 days (market-maker hedging / discounted holders)",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 2,
+    "testability": 4,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E130",
+    "pod2"
+   ],
+   "last_tested": "2026-10-09",
+   "next_test": null,
+   "notes": "median listing bleeds (-20% at 30d) but the mean is a fat right tail; 36-42% of listings spike >40% in 90 days; the book is already net short young names"
+  },
+  {
+   "id": "FF-settlement-hour",
+   "mechanism_family": "forced-flow",
+   "data_family": "klines_1h+funding",
+   "status": "CLOSED",
+   "title": "Funding-settlement-hour and day-boundary flows",
+   "scores": {
+    "plausibility": 2,
+    "novelty": 1,
+    "capacity": 2,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E156-B",
+    "rj8a",
+    "rj8b"
+   ],
+   "last_tested": "2026-10-08",
+   "next_test": null,
+   "notes": "< 2 bp at settlement hours; day-boundary flow was an FTX-era artefact; hourly residuals reverse 2-5 bp - below costs"
+  },
+  {
+   "id": "PO-crowding-oi-mdv",
+   "mechanism_family": "positioning",
+   "data_family": "oi+klines",
+   "status": "OPEN",
+   "title": "Crowding: open interest / median daily volume predicts reversal of the crowd's direction",
+   "scores": {
+    "plausibility": 4,
+    "novelty": 3,
+    "capacity": 4,
+    "testability": 4,
+    "complexity": 1
+   },
+   "priority": 192,
+   "ledger_refs": [],
+   "last_tested": null,
+   "next_test": "OI_t / MDV21 z-scored across the universe, signed by the 7-day residual move; horizon 7d; expect crowded-and-up names to underperform",
+   "notes": "named as the best next cross-sectional family after the E149 screen"
+  },
+  {
+   "id": "PO-p-minus-oi-plus",
+   "mechanism_family": "positioning",
+   "data_family": "oi+klines",
+   "status": "CLOSED",
+   "title": "Price down with OI up (new shorts / trapped longs) states",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 3,
+    "testability": 4,
+    "complexity": 2
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E156",
+    "H30"
+   ],
+   "last_tested": "2026-10-04",
+   "next_test": null,
+   "notes": "-270 bp/7d in 2024-26 but flat in calibration; rejected under the two-window rule"
+  },
+  {
+   "id": "PO-toptrader-vs-crowd",
+   "mechanism_family": "positioning",
+   "data_family": "positioning_ratios",
+   "status": "CLOSED",
+   "title": "Top-trader vs crowd long/short ratio divergence",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E145"
+   ],
+   "last_tested": "2026-09-15",
+   "next_test": null,
+   "notes": "REJECT at the signal stage; a retail-crowding corner in leveraged rallies is real in small/mid names only (WATCH, not capacity)"
+  },
+  {
+   "id": "PO-premium-leverage-price",
+   "mechanism_family": "positioning",
+   "data_family": "premium",
+   "status": "CLOSED",
+   "title": "Perp premium (mark - index) level as a cross-sectional factor",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 4,
+    "testability": 4,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E146",
+    "E74"
+   ],
+   "last_tested": "2026-09-16",
+   "next_test": null,
+   "notes": "one episode (2025-Q3 to 2026-Q2); it is the funding sort (rho 0.75) seen through another window; the master already loads -0.12 on it; nowcasting the next funding from the premium failed its gate"
+  },
+  {
+   "id": "MS-tradesize-whale-flow",
+   "mechanism_family": "microstructure",
+   "data_family": "aggtrades_hourly",
+   "status": "OPEN",
+   "title": "Net flow in large trade-size buckets (>= $100k prints) predicts the week",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 4,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 2
+   },
+   "priority": 54,
+   "ledger_refs": [
+    "M-20261010-mw1"
+   ],
+   "last_tested": "2026-10-10",
+   "next_test": "3-day net $ in the >= $100k bucket / total $; needs both windows covered by the aggTrades ingest (PENDING-DATA until then)",
+   "notes": "first microstructure test queued; coverage rule: >= 20 weeks carrying the feature per window"
+  },
+  {
+   "id": "MS-retail-net-flow",
+   "mechanism_family": "microstructure",
+   "data_family": "aggtrades_hourly",
+   "status": "OPEN",
+   "title": "Retail-size net buying (< $1k prints) is the wrong side",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 4,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 2
+   },
+   "priority": 54,
+   "ledger_refs": [
+    "M-20261010-mr1"
+   ],
+   "last_tested": "2026-10-10",
+   "next_test": "-(3-day net $ in the < $1k bucket / total $); same coverage caveat",
+   "notes": ""
+  },
+  {
+   "id": "MS-spread-widening",
+   "mechanism_family": "microstructure",
+   "data_family": "klines_1m",
+   "status": "OPEN",
+   "title": "Spread proxy (1-minute high/low range vs 90-day) widening = liquidity withdrawal before moves",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 4,
+    "capacity": 3,
+    "testability": 4,
+    "complexity": 2
+   },
+   "priority": 72,
+   "ledger_refs": [
+    "M-20261010-ms1"
+   ],
+   "last_tested": "2026-10-10",
+   "next_test": "mean 1-minute (high-low)/close over 3 days relative to its 90-day median; sign negative (widening underperforms)",
+   "notes": "Corwin-Schultz spread from hourly bars was 'ranks without dollars' - the 1-minute version is a different, finer measurement"
+  },
+  {
+   "id": "MS-intraday-seasonality",
+   "mechanism_family": "microstructure",
+   "data_family": "klines_1m",
+   "status": "OPEN",
+   "title": "Intraday seasonality by UTC hour / funding print, cross-sectionally",
+   "scores": {
+    "plausibility": 2,
+    "novelty": 3,
+    "capacity": 2,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 60,
+   "ledger_refs": [],
+   "last_tested": null,
+   "next_test": "mft-4h: residual return in the 4h after each funding print by the sign of the print, by name; execution-level value only unless > 5 bp net",
+   "notes": "hourly taker flow REVERSES at all horizons (execution value < 2 bp) - any intraday claim must clear costs explicitly"
+  },
+  {
+   "id": "MS-volume-at-price",
+   "mechanism_family": "microstructure",
+   "data_family": "klines_1m",
+   "status": "OPEN",
+   "title": "Volume concentration near the current price (support/resistance from 1-minute volume profile)",
+   "scores": {
+    "plausibility": 2,
+    "novelty": 4,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 3
+   },
+   "priority": 24,
+   "ledger_refs": [],
+   "last_tested": null,
+   "next_test": "share of 30-day 1-minute volume traded within +/-2% of the current close; mechanism: trapped inventory; sign to be argued",
+   "notes": ""
+  },
+  {
+   "id": "BE-xs-trend-weekly",
+   "mechanism_family": "behavioural",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "Cross-sectional trend / momentum at the weekly horizon",
+   "scores": {
+    "plausibility": 2,
+    "novelty": 1,
+    "capacity": 4,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E156-B4",
+    "r7",
+    "pod3",
+    "E151"
+   ],
+   "last_tested": "2026-10-09",
+   "next_test": null,
+   "notes": "REVERSAL in every residual form, six tests; 30-day momentum is reversal; Donchian breakout state underperforms next week"
+  },
+  {
+   "id": "BE-purified-reversal",
+   "mechanism_family": "behavioural",
+   "data_family": "klines+tbq",
+   "status": "CLOSED",
+   "title": "3-day move not explained by its own taker flow reverts",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 2,
+    "capacity": 3,
+    "testability": 4,
+    "complexity": 2
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "H16"
+   ],
+   "last_tested": "2026-10-04",
+   "next_test": null,
+   "notes": "IC t -2.8/-3.9 orthogonal but net dollars <= 0 after funding and costs"
+  },
+  {
+   "id": "BE-attention-volume",
+   "mechanism_family": "behavioural",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "Abnormal volume without a price move (attention) predicts underperformance",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 2,
+    "capacity": 3,
+    "testability": 4,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "AR-20261007-a"
+   ],
+   "last_tested": "2026-10-07",
+   "next_test": null,
+   "notes": "REJECT"
+  },
+  {
+   "id": "BE-lottery-max-ivol",
+   "mechanism_family": "behavioural",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "Lottery / MAX / idiosyncratic-vol / 'trash' quality factors",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 3,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E149",
+    "rj2",
+    "E152"
+   ],
+   "last_tested": "2026-10-08",
+   "next_test": null,
+   "notes": "rank names (IC t 4.5-9.7) and earn nothing: variance drag in log returns, negative funding paid by the shorts; a reader who traded the published version would have lost -125 bp/week"
+  },
+  {
+   "id": "CA-funding-carry-decomposition",
+   "mechanism_family": "carry",
+   "data_family": "funding+klines",
+   "status": "OPEN",
+   "title": "Decompose funding carry: funding yield + spot/perp convergence + directional + selection - costs",
+   "scores": {
+    "plausibility": 4,
+    "novelty": 3,
+    "capacity": 4,
+    "testability": 3,
+    "complexity": 3
+   },
+   "priority": 48,
+   "ledger_refs": [],
+   "last_tested": null,
+   "next_test": "diagnostic first (no verdict): which component carries the sleeve's P&L; then a hypothesis on the weakest component",
+   "notes": "queued in the standing research order after the execution reconciliation"
+  },
+  {
+   "id": "CA-vol-risk-premium",
+   "mechanism_family": "carry",
+   "data_family": "deribit_dvol",
+   "status": "CLOSED",
+   "title": "DVOL / skew regime as a cross-sectional modulator",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 2,
+    "capacity": 4,
+    "testability": 2,
+    "complexity": 2
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "H13",
+    "H14"
+   ],
+   "last_tested": "2026-10-04",
+   "next_test": null,
+   "notes": "REJECT; only an index-level daily series exists, no per-coin options"
+  },
+  {
+   "id": "RV-cluster-relative-reversal",
+   "mechanism_family": "relative-value",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "Reversal of a name's move relative to its price-derived cluster / closest peers",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 2,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 3
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "AR-20261004",
+    "H15",
+    "rj5",
+    "E89"
+   ],
+   "last_tested": "2026-10-08",
+   "next_test": null,
+   "notes": "IC t +4.2/+2.9 orthogonal, net +44/-72 bp/wk - fails the eval-dollars rule; quiet-volume filter did not help"
+  },
+  {
+   "id": "RV-cross-venue-funding",
+   "mechanism_family": "relative-value",
+   "data_family": "bybit",
+   "status": "CLOSED",
+   "title": "Binance vs Bybit funding gap and volume migration",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 2,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 2
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "xvfund",
+    "xvshare",
+    "E103"
+   ],
+   "last_tested": "2026-10-08",
+   "next_test": null,
+   "notes": "no information at the weekly horizon; Bybit leads Binance only hourly and by <= 1.3 bp; Binance leads funding 2:1"
+  },
+  {
+   "id": "RV-sector-pairs",
+   "mechanism_family": "relative-value",
+   "data_family": "klines+tags",
+   "status": "OPEN",
+   "title": "Within-sector pairs (L1 / L2 / DeFi / AI / meme) on a sector-neutral residual",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 3,
+    "capacity": 3,
+    "testability": 3,
+    "complexity": 3
+   },
+   "priority": 27,
+   "ledger_refs": [],
+   "last_tested": null,
+   "next_test": "needs a sector tag table (not in the catalogue yet - SCOUT task: propose a source); then 7-day sector-residual reversal with a volume condition",
+   "notes": "price-derived clusters already failed; the question is whether declared sectors behave differently"
+  },
+  {
+   "id": "XM-btc-dominance-regime",
+   "mechanism_family": "cross-market",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "BTC-dominance / alt-season regime timing of the alt-vs-BTC spread",
+   "scores": {
+    "plausibility": 2,
+    "novelty": 1,
+    "capacity": 5,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E148",
+    "E75",
+    "E77",
+    "E79",
+    "E88"
+   ],
+   "last_tested": "2026-09-18",
+   "next_test": null,
+   "notes": "SIX tests; no forecastability at any 5-40 day horizon; the large-cap basket trails BTC every year and that bleed is the short leg's alpha. Do not reopen without a forced-flow mechanism and new data (ETF / index / unlock flows)"
+  },
+  {
+   "id": "XM-btc-shock-catchup",
+   "mechanism_family": "cross-market",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "Alt under-reaction to BTC shocks (catch-up)",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 3,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E144"
+   ],
+   "last_tested": "2026-09-15",
+   "next_test": null,
+   "notes": "~15 bp per 4h, below costs"
+  },
+  {
+   "id": "XM-stablecoin-flows",
+   "mechanism_family": "cross-market",
+   "data_family": "external",
+   "status": "OPEN",
+   "title": "Stablecoin supply / exchange inflow changes lead risk appetite in small caps",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 4,
+    "capacity": 4,
+    "testability": 2,
+    "complexity": 2
+   },
+   "priority": 48,
+   "ledger_refs": [],
+   "last_tested": null,
+   "next_test": "SCOUT task first: identify a free daily stablecoin-supply series; then a time-series-conditioned cross-sectional test (small-cap long leg sized by the flow)",
+   "notes": "data not in the catalogue; a proposal here is an issue requesting the data, not a test"
+  },
+  {
+   "id": "SF-dispersion-regime",
+   "mechanism_family": "strategy-failure",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "Scale the book by cross-sectional dispersion / BTC-correlation regime",
+   "scores": {
+    "plausibility": 4,
+    "novelty": 2,
+    "capacity": 5,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E156-A"
+   ],
+   "last_tested": "2026-10-02",
+   "next_test": null,
+   "notes": "the book IS a quiet-market strategy (Sharpe 2.7-3.3 low-dispersion terciles vs 0.9-1.4 high) but a dispersion multiplier adds nothing over the drawdown governor"
+  },
+  {
+   "id": "SF-a4-long-leg-drop",
+   "mechanism_family": "strategy-failure",
+   "data_family": "funding+klines",
+   "status": "OPEN",
+   "title": "Drop the funding-carry SHORT leg (keep longs only)",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 2,
+    "capacity": 5,
+    "testability": 5,
+    "complexity": 1
+   },
+   "priority": 75,
+   "ledger_refs": [
+    "a4long"
+   ],
+   "last_tested": "2026-10-08",
+   "next_test": "+0.1/+0.7 %/yr at the master's budget - needs prospective evidence; re-run after each quarter of new data, never tune",
+   "notes": "FOLLOW-UP: WATCH"
+  },
+  {
+   "id": "SF-leveraged-rally-veto",
+   "mechanism_family": "strategy-failure",
+   "data_family": "oi+tbq",
+   "status": "CLOSED",
+   "title": "Veto illiquidity shorts during leveraged rallies (price up + OI up + taker-buy)",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 4,
+    "testability": 4,
+    "complexity": 2
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E71",
+    "E94"
+   ],
+   "last_tested": "2026-09-11",
+   "next_test": null,
+   "notes": "statistically thin, doubles turnover; flow veto on the illiquidity shorts not adopted"
+  },
+  {
+   "id": "SF-collapsed-name-short-guard",
+   "mechanism_family": "strategy-failure",
+   "data_family": "klines",
+   "status": "CLOSED",
+   "title": "Guard against shorting names that have already collapsed",
+   "scores": {
+    "plausibility": 3,
+    "novelty": 1,
+    "capacity": 4,
+    "testability": 4,
+    "complexity": 1
+   },
+   "priority": 0,
+   "ledger_refs": [
+    "E140"
+   ],
+   "last_tested": "2026-09-13",
+   "next_test": null,
+   "notes": "tested under the protocol; kept as a live shadow hypothesis only"
+  }
+ ]
+}

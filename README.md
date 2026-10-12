@@ -8,6 +8,9 @@ Configuration for **Scout**, agent A of a two-agent alpha-research desk on Binan
 |---|---|
 | `AGENTS.md` | Scout's master prompt. §0 is the Linear protocol (the system of record), §4 the run procedure, §9 the three human decisions. |
 | `reference/RISK_FRAMEWORK.md` / `.json` | The production risk model, binding on proposals (universe, caps, sizing, governor; §14 is the Scout-facing summary). The `.json` is the machine-readable twin. |
+| `reference/RESEARCH_PRINCIPLES.md` | The full research framework (41 principles) that `AGENTS.md` §3 condenses; binding. |
+| `reference/ALPHA_SOURCES.md` | Where to look for alpha: eight mechanism families with their generating questions, the nine conventions a hypothesis must satisfy, how to read external sources, and the inherited record of dead families. |
+| `reference/IDEA_MAP_SEED.json` + `tools/seed_idea_map.py` | The 31-cell seed of the idea map (13 OPEN with a `next_test`, 18 CLOSED carrying the record of 140+ past tests) and the one-off script that creates them as `idea-map` issues in Linear (idempotent; `--dry-run` first). |
 | `reference/REJECTION_PATTERNS.md` | The five ways 140+ past tests failed; every proposal must say why it is not one of them. |
 | `reference/GLOSSARY.md` | Human names for the production sleeves and sizing vocabulary (`a4` FundingCarry, `a12` IlliquidityPremium, `a90x_ratio` TakerFlow-R, …). |
 | `.agents/skills/research-scout/` | Scout's run skill: run dispatch, context-pack queries, proposal schema, the panel contract feature definitions write against. |
