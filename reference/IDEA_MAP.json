@@ -1,5 +1,5 @@
 {
- "_about": "Seed for the idea-map issues in Linear (team NoSyntax, label idea-map). One issue per cell; title = '<id> — <title>'; description = this JSON cell. OPEN = unstarted state, CLOSED = completed state. CLOSED cells carry the inherited record of what 140+ pre-registered tests already killed on this universe (2022-2026) — Scout does not re-propose them without a NEW mechanism or NEW data named in evidence_on_file. Run tools/seed_idea_map.py once (idempotent: it searches titles first).",
+ "_about": "The idea map: one cell per mechanism-family x data-family corner of the research space. This file IS the map - it lives in git and a human curates it (status, scores, next_test, ledger_refs); there are no idea-map issues in Linear and no agent creates, closes or edits cells. OPEN = unstarted or still promising, CLOSED = exhausted. CLOSED cells carry the inherited record of what 140+ pre-registered tests already killed on this universe (2022-2026) - Scout does not re-propose them without a NEW mechanism or NEW data named in evidence_on_file. Scout cites the cell id in every ticket; an idea with no cell names a new cell id in the ticket and the human adds it here.",
  "cells": [
   {
    "id": "FF-liq-cascade-reversal",

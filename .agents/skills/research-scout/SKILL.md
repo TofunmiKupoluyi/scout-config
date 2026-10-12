@@ -10,7 +10,7 @@ You start with fresh context each run; Linear is your only memory. A run either 
 ## Run dispatch
 | arrival | action | status after | rules |
 |---|---|---|---|
-| no ticket | PROPOSE one experiment: hypothesis → framework 1/5 → validated config → `create_issue` | Idea Generated | one experiment per run; search the ledger first; cite the idea-map cell id in the ticket — never create an `idea-map:` issue |
+| no ticket | PROPOSE one experiment: hypothesis → framework 1/5 → validated config → `create_issue` | Idea Generated | one experiment per run; search the ledger first; cite the idea-map cell id (`reference/IDEA_MAP.json`) in the ticket — never create an `idea-map:` issue |
 | ticket in **Critiqued** | NEW FRAMEWORK: read the newest `[JUDGE RESULT n/5 — FAIL]`, design a materially different framework for the same hypothesis, post `[SCOUT FRAMEWORK n+1/5]` with the validated config, bundle the move | Idea Generated — or Discarded with the reason in-thread when nothing materially different exists or a hard blocker was named | never a parameter tweak; n+1 ≤ 5 (round 5's failure is Judge's to discard) |
 | ticket in any other status | nothing | — | end without posting |
 
@@ -19,7 +19,7 @@ You start with fresh context each run; Linear is your only memory. A run either 
 
 ## The context pack for a fresh run (bounded — never page a search to the end)
 The inherited record lives in the repo; Linear adds only what changed since. Read, in order:
-- **Idea map** — `reference/IDEA_MAP_SEED.json` from the repo: every cell's id, mechanism family, OPEN/CLOSED, scores, `next_test` (the CLOSED cells are the memory of 140+ dead tests). Then ONE page of `search_issues("idea-map:")` for cells changed or added since the seed; where they disagree, the issue wins.
+- **Idea map** — `reference/IDEA_MAP.json` from the repo: every cell's id, mechanism family, OPEN/CLOSED, scores, `next_test` (the CLOSED cells are the memory of 140+ dead tests). The file is the only copy; nothing about cells lives in Linear.
 - **Ledger tail** — the FIRST page of `search_issues("hypothesis:")` (newest 25): identifier, hypothesis line, status (Discarded / Human Review / in flight), rounds used. Take a second page only if every row on the first is under 7 days old.
 - **Coverage** — derived from the tail plus the seed's family tags: experiments per mechanism family in the last 30 days; an untouched family outranks a crowded one.
 - **Open escalations** — ONE page of `search_issues("escalation:")` in unstarted statuses (a data request you already filed should not be filed again).
@@ -47,7 +47,7 @@ Read only the headline table and the **For Scout** section of Judge's result. Ma
 If the honest answer is "this hypothesis cannot be captured differently with the fields available", say so in-thread and set **Discarded**; a request for a missing field goes to an escalation (AGENTS.md §7), not into a config.
 
 ## Idea-map cells
-A cell is an issue titled `idea-map: <cell_id> — <short title>` carrying `id, mechanism_family, data_family, status, scores, next_test, ledger_refs[]`. Cells are seeded and maintained outside your runs (`tools/seed_idea_map.py`): you read them and cite the cell id in the ticket. An idea with no existing cell just names a new cell id in the ticket. You never create or close `idea-map:` issues.
+A cell is an entry in `reference/IDEA_MAP.json` carrying `id, mechanism_family, data_family, status, scores, next_test, ledger_refs[]`. The file is the idea map: a human curates it in git, and there are no `idea-map:` issues in Linear. You read it and cite the cell id in the ticket; an idea with no existing cell just names a new cell id (the human adds it to the file). You never edit the file and never create an `idea-map:` issue.
 
 ## Escalations
 `create_issue` (`followUpdates: false`) titled `escalation: <YYYY-MM-DD> — <slug>` for: a field the spec lacks that a hypothesis needs (name the field and the mechanism), a suspected data defect visible from metadata, a Judge result you believe is mechanically wrong (quote it), or any instruction that conflicts with AGENTS.md §2. Cite the experiment in both directions. Search open escalations first. Then continue.

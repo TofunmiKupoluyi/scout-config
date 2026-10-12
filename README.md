@@ -35,7 +35,7 @@ Maximum five frameworks per hypothesis. A new framework is a different *construc
 | `reference/WHAT_FAILED_BEFORE.md` | The inherited record of 140+ dead tests, as plain-words patterns (no test numbers). |
 | `reference/RESEARCH_PRINCIPLES.md` | The desk's research stance (mechanism first, simplicity, suspicion of data). |
 | `reference/GLOSSARY.md` | Human names of the known sleeves (FundingCarry, IlliquidityPremium, TakerFlow) so a "costume" of one can be recognised. |
-| `reference/IDEA_MAP_SEED.json` + `tools/seed_idea_map.py` | 31-cell idea-map seed and the one-off script that creates the `idea-map:` issues in Linear (idempotent; `--dry-run` first; needs `LINEAR_API_KEY` in the environment of whoever runs it — never Scout). |
+| `reference/IDEA_MAP.json` | The idea map itself: 31 cells (mechanism × data family, OPEN/CLOSED, scores, `next_test`). Lives in git and is curated by hand — there are no idea-map issues in Linear; tickets cite the cell id. |
 | `tools/validate_config.py` | Stdlib validator (schema + semantic rules); `python3 tools/validate_config.py cfg.json`. Same file as in judge-config. |
 | `examples/` | Four complete configs: the brief's worked example (Amihud top/bottom 10) and three reference constructions (funding carry, illiquidity quantile, taker-flow ratio). |
 | `.claude/skills` | Symlink to `.agents/skills` so Claude Code discovers the skills. |
