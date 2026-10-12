@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Seed the idea map into Linear (team NoSyntax, label `idea-map`) from reference/IDEA_MAP_SEED.json — run ONCE, idempotent.
 
-One Linear issue per cell: title "<id> — <title>", description = the cell JSON (plus a one-line summary), label `idea-map`,
+One Linear issue per cell: title "idea-map: <id> — <title>" (the prefix is how agent runs identify cells — their
+`create_issue` tool cannot set labels; the label is kept as a human convenience), description = the cell JSON (plus a
+one-line summary), label `idea-map`,
 state = an unstarted workflow state for OPEN cells and a completed state for CLOSED cells. Existing issues (same title, same
 team) are left alone, so re-running is safe. This is tooling, not research code; Scout never runs it.
 
@@ -77,7 +79,7 @@ def main():
     cells = json.load(open(a.seed, encoding="utf-8"))["cells"]
     plan = []
     for c in cells:
-        title = f"{c['id']} — {c['title']}"
+        title = f"idea-map: {c['id']} — {c['title']}"
         body = (f"**{c['mechanism_family']} × {c['data_family']}** · status {c['status']} · priority {c.get('priority', 0)} · scores {json.dumps(c['scores'])}\n\n"
                 f"next_test: {c.get('next_test') or '—'}\n\nnotes: {c.get('notes') or '—'}\n\nledger_refs (external ids from the inherited record): {', '.join(c.get('ledger_refs') or []) or '—'}\n\n```json\n{json.dumps(c, indent=1, ensure_ascii=False)}\n```")
         plan.append((title, body, c["status"]))
