@@ -12,6 +12,7 @@ Pure standard library (no jsonschema dependency): a small structural checker cov
 from __future__ import annotations
 
 import json
+import numpy as np
 import os
 import re
 import sys
@@ -155,6 +156,19 @@ def validate(cfg):
         errors.append("positions.side_gross_pct must be 1–100")
     if not pos.get("long", True) and not pos.get("short", True):
         errors.append("positions: at least one side must be on")
+    if "max_per_name_pct" in pos and not (0.1 <= float(pos["max_per_name_pct"]) <= 5):
+        errors.append("positions.max_per_name_pct must be 0.1–5 (the engine caps every name at 5 % of NAV)")
+    # cap feasibility (2026-10-13, after NOS-45 r2): the engine caps every name at 5 % of NAV. Equal weighting at S % per side needs at least
+    # S/5 names per side or the intended book can never be held (NOS-45 r2: 50 % on ~8 names = 6.25 % each, fill ratio 0.02).
+    side = float(pos.get("side_gross_pct", 50)); per_name = pos.get("per_name_bps")
+    if per_name is None and pos.get("max_per_name_pct") is None:
+        need = int(np.ceil(side / 5.0))
+        if mode == "threshold":
+            warnings.append(f"cap feasibility: threshold entry with equal weighting at {side:.0f} % per side needs ≥ {need} qualifiers per side to respect the 5 % per-name cap; a thinner week is clipped by the engine (intended ≠ held). Declare positions.max_per_name_pct (≤ 5) or per_name_bps to make the intended book feasible")
+        elif mode in ("top_bottom_n",) and "n" in pos and isinstance(pos["n"], (int, float)) and pos["n"] < need:
+            warnings.append(f"cap feasibility: {side:.0f} % per side over n={pos['n']} names is {side / pos['n']:.1f} % each, above the 5 % per-name cap; the engine will clip — set n ≥ {need} or declare max_per_name_pct")
+    elif per_name is not None and float(per_name) / 100.0 > 5:
+        errors.append("positions.per_name_bps above 500 (5 % of notional) can never be held under the 5 % per-name cap")
     # schedule
     sch = cfg["schedule"]
     if sch.get("rebalance") not in REBAL:

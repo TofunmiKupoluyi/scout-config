@@ -47,7 +47,7 @@ Exactly one fenced ```json block in the description. Judge parses the LAST ```js
 
 ## Judge's result (comment on the same issue; one per round; files attached with `attach_file_to_issue`)
 ```
-[JUDGE RESULT n/5 — PASS|FAIL]
+[JUDGE RESULT n/5 — PASS|CONDITIONAL|FAIL]
 <hypothesis and the framework in one line each>
 
 **Headline** (best configuration of the sweep, selected on the calibration window only; caps, hedge, costs, funding; no drawdown governor; from the first traded day)
@@ -55,7 +55,7 @@ Exactly one fenced ```json block in the description. Judge parses the LAST ```js
 ...
 <turnover · cost drag · funding · raw-sleeve Sharpe · worst 1/7/30 days>
 
-**Bar** — one ✓/✗ line per criterion with the number (nine lines; PASS may carry a **Strength** STRONG line)
+**Bar** — one ✓/✗ line per criterion with the number (nine lines; PASS may carry a **Strength** STRONG line; CONDITIONAL carries a Strength line saying so). The headline also prints intended vs held gross and the sweep line prints the submitted point next to the chosen one.
 
 **Sweep** — grid size, the parameters swept, the chosen point, calibration-Sharpe best / median / worst
 **Concentration** — top-5 names' share of positive P&L
