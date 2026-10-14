@@ -29,6 +29,8 @@ All are per-day, per-symbol, known at `t` 00:00 UTC. "day t−1" = the UTC day t
 | `btc_ret` | BTC's `ret`, broadcast to every column | conditioning on the market |
 | `high`, `low` | day t−1's high / low | ranges |
 | `range_pct` | (high − low) / close_{t−1} | intraday range, a vol proxy |
+| `hl_spread_1m` | day t−1's mean over its 1-minute bars of (high − low) / close | spread / liquidity proxy; market-maker withdrawal |
+| `hl_spread_1m_median` | median of the same per-minute values | robust version; exactly 0 when most minutes traded at one price, so near-zero means thin, not tight |
 | `volume_usd` | day t−1's quote volume in USD | activity, Amihud, attention |
 | `taker_buy_usd`, `taker_sell_usd` | day t−1's aggressive buy / sell volume in USD | flow |
 | `taker_imbalance` | (buy − sell) / volume, in [−1, 1] | net aggression |
@@ -48,7 +50,7 @@ All are per-day, per-symbol, known at `t` 00:00 UTC. "day t−1" = the UTC day t
 | `age_days` | days since the first candle | listing effects, filters |
 | `mcap` | market cap — **not provisioned (all NaN)**; a config that depends on it will have no names | do not use |
 
-Hourly and minute data exist in the bucket but are **not exposed** as fields in schema 1.0; an intraday idea must be expressed through the daily aggregates above (e.g. `taker_imbalance`, `range_pct`, `n_trades`) or escalated as a data request.
+Hourly and minute data exist in the bucket but are **not exposed** as fields in schema 1.0; an intraday idea must be expressed through the daily aggregates above (e.g. `taker_imbalance`, `range_pct`, `hl_spread_1m`, `n_trades`) or escalated as a data request. Unlike `range_pct` (one daily range, mostly volatility), `hl_spread_1m` averages 1,440 one-minute ranges, so it reflects bid-ask bounce and depth; the two are different measurements, not substitutes.
 
 ## 3. Signal operations (`signal.steps` — a list evaluated top to bottom; each step names its `out`)
 Every step has `op` and `out` (snake_case). Inputs refer to the `out` of earlier steps. Numbers may be literals or `"$param"` references.
