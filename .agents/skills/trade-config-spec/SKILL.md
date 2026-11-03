@@ -34,6 +34,9 @@ All are per-day, per-symbol, known at `t` 00:00 UTC. "day t−1" = the UTC day t
 | `volume_usd` | day t−1's quote volume in USD | activity, Amihud, attention |
 | `taker_buy_usd`, `taker_sell_usd` | day t−1's aggressive buy / sell volume in USD | flow |
 | `taker_imbalance` | (buy − sell) / volume, in [−1, 1] | net aggression |
+| `taker_net_usd`, `taker_gross_usd` | day t−1's taker buy − sell / buy + sell USD over all prints, from aggTrades | flow; denominators for the size split (consistent with it, unlike `volume_usd`) |
+| `taker_net_small_usd`, `taker_gross_small_usd` | the same, prints **under $1k** | retail flow |
+| `taker_net_large_usd`, `taker_gross_large_usd` | the same, prints of **$100k and over** | large-print flow; note a print is one taker order at one price, not a parent order — sliced institutional flow lands in the small and mid buckets, so large-print net undercounts it |
 | `n_trades` | day t−1's trade count | retail activity, average trade size via `div` |
 | `funding` | funding paid by a LONG over day t−1 (sum of prints; positive = longs paid) | carry, crowding |
 | `funding_3d` | 3-day sum of `funding` | smoother carry |
@@ -50,7 +53,7 @@ All are per-day, per-symbol, known at `t` 00:00 UTC. "day t−1" = the UTC day t
 | `age_days` | days since the first candle | listing effects, filters |
 | `mcap` | market cap — **not provisioned (all NaN)**; a config that depends on it will have no names | do not use |
 
-Hourly and minute data exist in the bucket but are **not exposed** as fields in schema 1.0; an intraday idea must be expressed through the daily aggregates above (e.g. `taker_imbalance`, `range_pct`, `hl_spread_1m`, `n_trades`) or escalated as a data request. Unlike `range_pct` (one daily range, mostly volatility), `hl_spread_1m` averages 1,440 one-minute ranges, so it reflects bid-ask bounce and depth; the two are different measurements, not substitutes.
+Hourly and minute data exist in the bucket but are **not exposed** as fields in schema 1.0; an intraday idea must be expressed through the daily aggregates above (e.g. `taker_imbalance`, `range_pct`, `hl_spread_1m`, `n_trades`) or escalated as a data request. Unlike `range_pct` (one daily range, mostly volatility), `hl_spread_1m` averages 1,440 one-minute ranges, so it reflects bid-ask bounce and depth; the two are different measurements, not substitutes. The `taker_net_*`/`taker_gross_*` fields come from the `taker_flow` dataset, not the candles: a day missing from it is NaN (never carried forward), and a ratio such as `taker_net_large_usd ÷ taker_gross_large_usd` should be summed over a window first, since a single day's large prints can be zero.
 
 ## 3. Signal operations (`signal.steps` — a list evaluated top to bottom; each step names its `out`)
 Every step has `op` and `out` (snake_case). Inputs refer to the `out` of earlier steps. Numbers may be literals or `"$param"` references.

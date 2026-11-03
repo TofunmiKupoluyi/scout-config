@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-03 — trade-size taker flow fields (NOS-102)
+- Six daily fields from the bucket's `taker_flow` dataset (aggTrades): `taker_net_usd`, `taker_gross_usd` (all prints), `taker_net_small_usd`, `taker_gross_small_usd` (prints under $1k), `taker_net_large_usd`, `taker_gross_large_usd` (prints of $100k and over). Day t−1's dollars stamped at t, never forward-filled (NaN on a missing day). `trade-config-spec` documents them with the print-is-not-a-parent-order caveat; `validate_config.py` synced from judge-config; `ALPHA_SOURCES.md` no longer says the size split waits on data.
+
 ## 2026-11-03 — claims and ideas replace the idea map
 - `reference/IDEA_MAP.json` is deleted, not imported: its 31 cells were broad parents of the ideas Linear already holds, and their scores, `next_test` and `ledger_refs` were hand-guessed or duplicated Linear.
 - The context pack reads the research API instead (`reference/RESEARCH_API.md`): the claim frontier (`GET /claims?grounded=false&testable=true`) and the ideas already tried (`GET /ideas`, with findings). Dedup is `GET /ideas?q=` across every status.
