@@ -35,13 +35,14 @@ Maximum five frameworks per hypothesis. A new framework is a different *construc
 | `reference/WHAT_FAILED_BEFORE.md` | The inherited record of 140+ dead tests, as plain-words patterns (no test numbers). |
 | `reference/RESEARCH_PRINCIPLES.md` | The desk's research stance (mechanism first, simplicity, suspicion of data). |
 | `reference/GLOSSARY.md` | Human names of the known sleeves (FundingCarry, IlliquidityPremium, TakerFlow) so a "costume" of one can be recognised. |
-| `reference/IDEA_MAP.json` | The idea map itself: 31 cells (mechanism × data family, OPEN/CLOSED, scores, `next_test`). Lives in git and is curated by hand — there are no idea-map issues in Linear; tickets cite the cell id. |
+| `reference/RESEARCH_API.md` | The research API Scout reads and writes: claims extracted from papers (the frontier), the ideas already tried with their findings, and the data sources claims need (identical copy in judge-config and indexer-config). |
 | `tools/validate_config.py` | Stdlib validator (schema + semantic rules); `python3 tools/validate_config.py cfg.json`. Same file as in judge-config. |
 | `examples/` | Four complete configs: the brief's worked example (Amihud top/bottom 10) and three reference constructions (funding carry, illiquidity quantile, taker-flow ratio). |
 | `.claude/skills` | Symlink to `.agents/skills` so Claude Code discovers the skills. |
 
 ## What must exist outside this repo
 - The four Linear workflow statuses in team NoSyntax, named exactly **Idea Generated**, **Critiqued**, **Discarded**, **Human Review** (`list_project_teams` must return them).
+- The agent secret `RESEARCH_API_KEY`: a DESK key for the research API (`alpha_research`), minted by a person with a Keycloak login.
 - The fresh-run trigger (a schedule) — ticket runs arrive through the Linear webhook into the conversation that created the issue.
 - Judge, with the engine (`judge-config/tools/judge_run.py`), the data bucket credentials (`AWS_S3_ACCESS_KEY`, `AWS_S3_ACCESS_KEY_SECRET`, referenced by name only) and Python with pandas/pyarrow/s3fs. Scout needs only Python 3 for the validator.
 
