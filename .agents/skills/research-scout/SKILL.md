@@ -43,6 +43,7 @@ Read only the headline table and the **For Scout** section of Judge's result. Ma
 | tracks a known sleeve | neutralise the sleeve's ingredient in the signal (e.g. divide by `mdv21`, `cross_demean` within a conditioning group via `where`), or drop the leg that is the sleeve |
 | not robust to its parameters | a construction with fewer free numbers (sign-based, threshold on a z-score, longer and smoother windows) |
 | fails the placebo | the observable is reacting to returns; find the cause variable that moves first (OI, funding, taker flow) and build from it |
+| placebo control off | randomly relabelled books of the same shape *lose* through the risk framework, so Judge's control cannot vouch for the ranking either way; this is the engine's construction, not your proposal — do not redesign around it, say so in the thread and let the escalation run |
 If the honest answer is "this hypothesis cannot be captured differently with the fields available", say so in-thread and set **Discarded**; a request for a missing field goes to an escalation (AGENTS.md §7), not into a config.
 
 ## Claims and ideas

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-04b — Judge's placebo and plateau repaired (NOS-44)
+- Judge's placebo now relabels the ranking within the names your config actually ranks, keeping the book's shape; the old whole-column shuffle built mis-shaped books that bled through the risk framework and failed NOS-29, NOS-64 and NOS-126 on a negative placebo. The plateau line runs the chosen point's neighbours when the sweep sample holds none instead of passing vacuously.
+- New For Scout phrase `placebo control off` (`research-scout` skill, `TICKET_FORMAT.md` synced from judge-config): the construction, not your proposal — do not redesign around it.
+
 ## 2026-11-04 — hourly resolution (schema 1.1)
 - `trade-config-spec` §2b: `schedule.resolution: "1h"` runs a config on an hourly grid — hour-of-day, session, hour-to-hour and intraday-flow ideas are now proposals, not data requests. Bar fields are the hour's bar, `hour_utc`/`dow` stamp the row, windows count hours, schedule keys `rebalance_hours`, `holding_hours`, `delay_hours`. New daily field `dow`. Minute-scale ideas remain data requests.
 - `validate_config.py` and `TRADE_CONFIG_SCHEMA.json` synced from judge-config; new `examples/example_hour_of_day.json`; `ALPHA_SOURCES.md` no longer sends intraday ideas to daily aggregates only.
