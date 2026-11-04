@@ -29,7 +29,7 @@ Maximum five frameworks per hypothesis. A new framework is a different *construc
 | `.agents/skills/research-scout/` | Run procedure: dispatch, Linear tools, context pack, how to write the three deliverables, how to design round 2–5 from a FAIL. |
 | `.agents/skills/trade-config-spec/` | The config language: data fields (all point-in-time), signal operations, positions and schedule rules, parameter ranges, validation, worked example. |
 | `.agents/skills/binance-futures-data/` | The S3 bucket layout (Scout uses it for metadata only — which symbols, which fields, from when). |
-| `reference/TRADE_CONFIG_SCHEMA.json` | JSON schema 1.0 of a trade config (identical copy in judge-config). |
+| `reference/TRADE_CONFIG_SCHEMA.json` | JSON schema 1.1 of a trade config (identical copy in judge-config). |
 | `reference/TICKET_FORMAT.md` | What goes in the issue description, the `[SCOUT FRAMEWORK n/5]` and `[JUDGE RESULT n/5]` comments, and the status transitions (identical copy in judge-config). |
 | `reference/ALPHA_SOURCES.md` | Where to look: eight mechanism families with generating questions, the nine conventions an experiment must satisfy. |
 | `reference/WHAT_FAILED_BEFORE.md` | The inherited record of 140+ dead tests, as plain-words patterns (no test numbers). |
@@ -37,7 +37,7 @@ Maximum five frameworks per hypothesis. A new framework is a different *construc
 | `reference/GLOSSARY.md` | Human names of the known sleeves (FundingCarry, IlliquidityPremium, TakerFlow) so a "costume" of one can be recognised. |
 | `reference/RESEARCH_API.md` | The research API Scout reads and writes: claims extracted from papers (the frontier), the ideas already tried with their findings, and the data sources claims need (identical copy in judge-config and indexer-config). |
 | `tools/validate_config.py` | Stdlib validator (schema + semantic rules); `python3 tools/validate_config.py cfg.json`. Same file as in judge-config. |
-| `examples/` | Four complete configs: the brief's worked example (Amihud top/bottom 10) and three reference constructions (funding carry, illiquidity quantile, taker-flow ratio). |
+| `examples/` | Five complete configs: the brief's worked example (Amihud top/bottom 10), three reference constructions (funding carry, illiquidity quantile, taker-flow ratio) and an hourly time-of-day example (`example_hour_of_day.json`). |
 | `.claude/skills` | Symlink to `.agents/skills` so Claude Code discovers the skills. |
 
 ## What must exist outside this repo

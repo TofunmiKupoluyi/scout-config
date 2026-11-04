@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-04 — hourly resolution (schema 1.1)
+- `trade-config-spec` §2b: `schedule.resolution: "1h"` runs a config on an hourly grid — hour-of-day, session, hour-to-hour and intraday-flow ideas are now proposals, not data requests. Bar fields are the hour's bar, `hour_utc`/`dow` stamp the row, windows count hours, schedule keys `rebalance_hours`, `holding_hours`, `delay_hours`. New daily field `dow`. Minute-scale ideas remain data requests.
+- `validate_config.py` and `TRADE_CONFIG_SCHEMA.json` synced from judge-config; new `examples/example_hour_of_day.json`; `ALPHA_SOURCES.md` no longer sends intraday ideas to daily aggregates only.
+- Judge's placebo line is now scored gross of costs (bar version 2026-11-04), so "fails the placebo" no longer appears just because a construction trades a lot.
+
 ## 2026-11-03 — session id on every research write
 - Every POST/PUT/PATCH to the research API sends `X-Session-Id: <your session id>` (from the system prompt); a write without it is a 400. The store records it as provenance (who filed or closed an idea, who requested or resolved a data source, who indexed a paper), so each row links back to its run.
 
